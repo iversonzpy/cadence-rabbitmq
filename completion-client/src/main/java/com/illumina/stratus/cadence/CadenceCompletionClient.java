@@ -7,9 +7,7 @@ import com.illumina.stratus.cadence.service.model.TaskDto;
 import com.uber.cadence.client.ActivityCompletionClient;
 import com.uber.cadence.client.WorkflowClient;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
@@ -19,8 +17,6 @@ import java.io.IOException;
  */
 
 @Slf4j
-@Component
-@RabbitListener(queues = QueueConfiguration.RESULT_QUEUE_NAME)
 public class CadenceCompletionClient {
 
     static final String DOMAIN = "WES-ISL";
@@ -29,7 +25,11 @@ public class CadenceCompletionClient {
     private WorkflowClient workflowClient = WorkflowClient.newInstance(DOMAIN);
     private ActivityCompletionClient completionClient = workflowClient.newActivityCompletionClient();
 
-    @RabbitHandler
+    /**
+     * Change here to result queue
+     * @param message
+     */
+    @RabbitListener(queues = QueueConfiguration.RESULT_QUEUE_NAME)
     public void receiveMessage(String message) {
 
 
@@ -49,7 +49,9 @@ public class CadenceCompletionClient {
             throw new RuntimeException("Error: Result is null.");
         }
 
-        completionClient.complete(task.getTaskToken().getBytes(), task.getOutput());
+        String taskToken = task.getTaskToken();
+
+        completionClient.complete(taskToken.getBytes(), task.getOutput());
 
     }
 

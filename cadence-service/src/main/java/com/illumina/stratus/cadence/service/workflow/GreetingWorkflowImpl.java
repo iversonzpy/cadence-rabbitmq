@@ -1,8 +1,10 @@
 package com.illumina.stratus.cadence.service.workflow;
 
 import com.uber.cadence.workflow.Workflow;
+import org.springframework.stereotype.Component;
 
 /** GreetingWorkflow implementation that calls GreetingsActivities#printIt. */
+
 public class GreetingWorkflowImpl implements GreetingWorkflow {
 
     /**

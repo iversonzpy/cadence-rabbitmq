@@ -2,15 +2,23 @@ package com.illumina.stratus.cadence.service.workflow;
 
 import com.illumina.stratus.cadence.service.config.QueueConfiguration;
 import com.illumina.stratus.cadence.service.model.TaskDto;
+import com.illumina.stratus.cadence.service.mqservice.MqSender;
+import com.illumina.stratus.cadence.service.util.SpringUtil;
 import com.uber.cadence.activity.Activity;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 
 public class GreetingActivitiesImpl implements GreetingActivities {
 
+    public GreetingActivitiesImpl(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
 
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
+    private final RabbitTemplate rabbitTemplate;
+
+    // private MqSender mqSender = SpringUtil.getBean(MqSender.class);
 
     /**
      * Demonstrates how to implement an activity asynchronously. When {@link
@@ -32,11 +40,20 @@ public class GreetingActivitiesImpl implements GreetingActivities {
 
         Activity.doNotCompleteOnReturn();
         // When doNotCompleteOnReturn() is invoked the return value is ignored.
-        return input;
+        return "ignored";
     }
 
-    public void sendMessage(byte[] taskToken, String result) {
-        TaskDto task = new TaskDto(new String(taskToken), result, null);
-        this.rabbitTemplate.convertAndSend(QueueConfiguration.EXCHANGE_NAME, QueueConfiguration.REQUEST_ROUTING_KEY, task.toInputString());
+    public void sendMessage(byte[] taskToken, String input) {
+
+        TaskDto task = new TaskDto(taskToken, input);
+
+        this.rabbitTemplate.convertAndSend(QueueConfiguration.EXCHANGE_NAME, QueueConfiguration.REQUEST_ROUTING_KEY, task.toString());
+
+//        mqSender.sendToRequestRabbitmq(task.toInputString());
+
+        System.out.println("=============");
+        System.out.println(task.toString());
+
+        System.out.println("Message send to request queue");
     }
 }

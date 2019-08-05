@@ -5,9 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.illumina.stratus.cadence.service.config.QueueConfiguration;
 import com.illumina.stratus.cadence.service.model.TaskDto;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +23,7 @@ import java.io.IOException;
 public class RemoteCadenceActivityPoller {
 
     @Autowired
-    private AmqpTemplate rabbitTemplate;
+    private RabbitTemplate rabbitTemplate;
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -36,23 +36,27 @@ public class RemoteCadenceActivityPoller {
 
         // get task token from message
 
-        TaskDto task = null;
+        TaskDto task;
         try {
             task = MAPPER.readValue(message, TaskDto.class);
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if(task == null) {
-            throw new RuntimeException("Error: Request is null.");
+            throw new RuntimeException("Can not deserialize the task message.");
         }
 
         doWork(task);
         // sendSucceedMessage(task);
 
-        System.out.println("DONE");
-    }
+        String result = "{\"hello\":456}";
+        task.setOutput(result);
 
+        System.out.println("After work: ");
+        System.out.println(task.toString());
+        System.out.println("DONE");
+
+        System.out.println("========sending to result queue====");
+        sendSucceedMessage(task);
+
+    }
 
 
     private static void doWork(TaskDto task) {
@@ -61,14 +65,12 @@ public class RemoteCadenceActivityPoller {
         } catch (InterruptedException _ignored) {
             Thread.currentThread().interrupt();
         }
-        String result = "{\"hello\":456}";
-        task.setOutput(result);
 
     }
 
     private void sendSucceedMessage(TaskDto task) {
 
-        rabbitTemplate.convertAndSend(QueueConfiguration.EXCHANGE_NAME, QueueConfiguration.RESULT_ROUTING_KEY, task.toOutputString());
+        rabbitTemplate.convertAndSend(QueueConfiguration.EXCHANGE_NAME, QueueConfiguration.RESULT_ROUTING_KEY, task.toString());
     }
 
 

@@ -1,2 +1,2 @@
-com/illumina/stratus/remote/Application.class
-com/illumina/stratus/remote/RemoteCadenceActivityPoller.class
+com/illumina/stratus/cadence/RemoteCadenceActivityPoller.class
+com/illumina/stratus/cadence/Application.class

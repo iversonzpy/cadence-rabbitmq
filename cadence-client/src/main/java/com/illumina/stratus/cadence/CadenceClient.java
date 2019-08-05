@@ -1,6 +1,8 @@
-package com.illumina.stratus.hello;
+package com.illumina.stratus.cadence;
 
+import com.illumina.stratus.cadence.service.workflow.GreetingWorkflow;
 import com.uber.cadence.client.WorkflowClient;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -8,6 +10,7 @@ import java.util.concurrent.ExecutionException;
 /**
  * Initialize a workflow, run workflow method
  */
+@SpringBootApplication
 public class CadenceClient {
 
 

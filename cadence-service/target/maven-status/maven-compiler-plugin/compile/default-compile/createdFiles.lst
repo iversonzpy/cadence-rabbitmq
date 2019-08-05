@@ -1,7 +1,8 @@
-com/illumina/stratus/hello/GreetingActivitiesImpl.class
-com/illumina/stratus/hello/GreetingActivities.class
-com/illumina/stratus/config/QueueConfiguration.class
-com/illumina/stratus/hello/PropertiesConstant.class
-com/illumina/stratus/model/TaskDto.class
-com/illumina/stratus/hello/GreetingWorkflow.class
-com/illumina/stratus/hello/GreetingWorkflowImpl.class
+com/illumina/stratus/cadence/service/workflow/GreetingActivitiesImpl.class
+com/illumina/stratus/cadence/service/workflow/PropertiesConstant.class
+com/illumina/stratus/cadence/service/workflow/GreetingWorkflowImpl.class
+com/illumina/stratus/cadence/service/workflow/GreetingActivities.class
+com/illumina/stratus/cadence/service/model/TaskDto.class
+com/illumina/stratus/cadence/service/config/QueueConfiguration.class
+com/illumina/stratus/cadence/service/workflow/GreetingWorkflow.class
+com/illumina/stratus/cadence/service/Application.class

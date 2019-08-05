@@ -1,10 +1,14 @@
-package com.illumina.stratus.worker;
+package com.illumina.stratus.cadence;
 
+import com.illumina.stratus.cadence.service.workflow.GreetingActivitiesImpl;
+import com.illumina.stratus.cadence.service.workflow.GreetingWorkflowImpl;
 import com.uber.cadence.worker.Worker;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Workers with registered activities
  */
+@SpringBootApplication
 public class CadenceWorker {
 
     static final String DOMAIN = "WES-ISL";

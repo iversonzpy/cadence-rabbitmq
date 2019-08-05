@@ -1,4 +1,4 @@
-package com.illumina.stratus.hello;
+package com.illumina.stratus.cadence.service.workflow;
 
 import com.uber.cadence.workflow.Workflow;
 

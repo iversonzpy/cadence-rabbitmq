@@ -16,7 +16,6 @@
             <groupId>com.illumina.stratus</groupId>
             <artifactId>cadence-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -54,7 +53,7 @@
 <!--                    </execution>-->
 <!--                </executions>-->
 <!--                <configuration>-->
-<!--                    <mainClass>com.illumina.stratus.worker.CadenceWorker</mainClass>-->
+<!--                    <mainClass>com.illumina.stratus.cadencee.CadenceWorker</mainClass>-->
 <!--                </configuration>-->
 <!--            </plugin>-->
         </plugins>

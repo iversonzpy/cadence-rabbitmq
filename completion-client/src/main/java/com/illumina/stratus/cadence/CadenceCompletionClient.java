@@ -1,8 +1,9 @@
-package com.illumina.stratus.completion;
+package com.illumina.stratus.cadence;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.illumina.stratus.model.TaskDto;
+import com.illumina.stratus.cadence.service.config.QueueConfiguration;
+import com.illumina.stratus.cadence.service.model.TaskDto;
 import com.uber.cadence.client.ActivityCompletionClient;
 import com.uber.cadence.client.WorkflowClient;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ import java.io.IOException;
 
 @Slf4j
 @Component
-@RabbitListener(queues = "result-queue")
+@RabbitListener(queues = QueueConfiguration.RESULT_QUEUE_NAME)
 public class CadenceCompletionClient {
 
     static final String DOMAIN = "WES-ISL";

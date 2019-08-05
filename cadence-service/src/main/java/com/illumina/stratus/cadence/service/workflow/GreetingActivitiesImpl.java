@@ -1,13 +1,11 @@
-package com.illumina.stratus.hello;
+package com.illumina.stratus.cadence.service.workflow;
 
-import com.illumina.stratus.config.QueueConfiguration;
-import com.illumina.stratus.model.TaskDto;
+import com.illumina.stratus.cadence.service.config.QueueConfiguration;
+import com.illumina.stratus.cadence.service.model.TaskDto;
 import com.uber.cadence.activity.Activity;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
 public class GreetingActivitiesImpl implements GreetingActivities {
 
 
@@ -21,7 +19,7 @@ public class GreetingActivitiesImpl implements GreetingActivities {
      */
     @Override
     public String composeGreeting(String greeting, String name) {
-        // TaskToken is a correlation token used to match an activity task with its completion
+        // TaskToken is a correlation token used to match an activity task with its cadence
         byte[] taskToken = Activity.getTaskToken();
         System.out.println(new String(taskToken));
         // {id:xxx}

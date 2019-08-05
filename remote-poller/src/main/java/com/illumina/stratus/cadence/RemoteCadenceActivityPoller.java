@@ -1,8 +1,9 @@
-package com.illumina.stratus.remote;
+package com.illumina.stratus.cadence;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.illumina.stratus.model.TaskDto;
+import com.illumina.stratus.cadence.service.config.QueueConfiguration;
+import com.illumina.stratus.cadence.service.model.TaskDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
@@ -18,7 +19,7 @@ import java.io.IOException;
  */
 @Slf4j
 @Component
-@RabbitListener(queues = "request-queue")
+@RabbitListener(queues = QueueConfiguration.REQUEST_QUEUE_NAME)
 public class RemoteCadenceActivityPoller {
 
     @Autowired
@@ -67,7 +68,7 @@ public class RemoteCadenceActivityPoller {
 
     private void sendSucceedMessage(TaskDto task) {
 
-        rabbitTemplate.convertAndSend("result-queue", "result-topic", task.toOutputString());
+        rabbitTemplate.convertAndSend(QueueConfiguration.EXCHANGE_NAME, QueueConfiguration.RESULT_ROUTING_KEY, task.toOutputString());
     }
 
 

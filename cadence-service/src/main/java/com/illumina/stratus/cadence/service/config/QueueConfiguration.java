@@ -1,4 +1,4 @@
-package com.illumina.stratus.config;
+package com.illumina.stratus.cadence.service.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;

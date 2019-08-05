@@ -1,8 +1,8 @@
-package com.illumina.stratus.hello;
+package com.illumina.stratus.cadence.service.workflow;
 
 import com.uber.cadence.workflow.WorkflowMethod;
 
-import static com.illumina.stratus.hello.PropertiesConstant.TASK_LIST;
+import static com.illumina.stratus.cadence.service.workflow.PropertiesConstant.TASK_LIST;
 
 public interface GreetingWorkflow {
     /** @return greeting string */

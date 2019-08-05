@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- scan: 设置为true,代表会在指定的时间内重新加载日志配置文件-->
+<!-- scanPeriod: 当scan=true时，日志配置文件会在指定的单位时间内重新加载，默认是每分钟会重载一次。-->
+<!-- scanPeriod配置说明: 时间单位：milliseconds, seconds, minutes, hours-->
+<!-- eg: <configuration scan="true" scanPeriod="1 hours"> -->
+<configuration debug="false">
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <!-- 开启后可以通过jmx动态控制日志级别(springboot Admin的功能) -->
+    <!--<jmxConfigurator/>-->
+
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+    <springProperty scope="context" name="springAppName" source="spring.application.name" defaultValue="venus"/>
+    <property name="LOG_HOME" value="/logs/${springAppName}"/>
+
+    <!-- ===================================================================== -->
+    <!-- 以下是appender的定义，定义日志输出的目的地、输出方式及过滤级别                -->
+    <!-- ===================================================================== -->
+    <appender name="common-log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/common.log</file>
+        <append>true</append>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <Pattern>%date [%thread] %-5level %logger{60} [%file : %line] - %msg%n</Pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_HOME}/common.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- each file should be at most 50MB, keep 30 days worth of history, but at most 20GB -->
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="error-log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_HOME}/error.log</file>
+        <append>true</append>
+        <!-- LevelFilter: 级别过滤器，根据日志级别进行过滤 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder>
+            <Pattern>%date [%thread] %-5level %logger{60} [%file : %line] - %msg%n</Pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${LOG_HOME}/error.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- each file should be at most 50MB, keep 30 days worth of history, but at most 20GB -->
+            <maxFileSize>50MB</maxFileSize>
+            <maxHistory>30</maxHistory>
+            <totalSizeCap>20GB</totalSizeCap>
+        </rollingPolicy>
+    </appender>
+
+    <!-- ===================================================================== -->
+    <!-- 日志写出器：每一个logger可以有多个输出目的地和输出方式                -->
+    <!-- ===================================================================== -->
+    <!--<logger name="com.chinapht.apps.socket" level="INFO" additivity="false">-->
+    <!--<appender-ref ref="netty-log"/>-->
+    <!--</logger>-->
+
+    <!-- ===================================================================== -->
+    <!-- Root logger 所有logger的基类，没有定义的logger将会使用root logger     -->
+    <!-- ===================================================================== -->
+
+    <root level="debug">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="common-log"/>
+        <appender-ref ref="error-log"/>
+    </root>
+
+</configuration>

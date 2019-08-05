@@ -2,6 +2,7 @@ package com.example.demo.rabbit.producer;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -19,5 +20,10 @@ public class HelloSender {
         String sendMsg = "hello " + new Date();
         System.out.println("Sender : " + sendMsg);
         this.rabbitTemplate.convertAndSend("helloQueue", sendMsg);
+    }
+
+    @Scheduled(fixedRate = 3000)
+    public void sendTest() {
+        this.send();
     }
 }

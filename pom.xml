@@ -29,7 +29,7 @@
         <junit.version>4.11</junit.version>
         <jackson-core.version>2.9.9</jackson-core.version>
         <jackson-annotations.version>2.9.0</jackson-annotations.version>
-        <jackson-databind.version>2.9.9</jackson-databind.version>
+        <jackson-databind.version>2.9.10.8</jackson-databind.version>
         <lombok.version>1.18.4</lombok.version>
         <cadence-client.version>2.5.2</cadence-client.version>
         <logback-classic.version>1.2.3</logback-classic.version>
